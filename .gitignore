@@ -1,0 +1,26 @@
+# Secrets
+keys.env
+.env
+*.env
+
+# Google OAuth
+google_credentials.json
+google_token.json
+
+# Database
+*.db
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+*.egg-info/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# OS
+.DS_Store
+Thumbs.db

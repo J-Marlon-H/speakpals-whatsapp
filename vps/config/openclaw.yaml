@@ -1,0 +1,54 @@
+model:
+  provider: anthropic
+  model: claude-sonnet-4-6
+  max_tokens: 2048
+
+channels:
+  whatsapp:
+    dmPolicy: allowlist
+    allowFrom:
+      - "+45OWNER_NUMBER"   # HUMAN DEPENDENCY: replace with your dedicated WhatsApp number
+    ackReaction:
+      emoji: "👍"
+      direct: true
+
+memory:
+  path: /home/openclaw/memory
+  format: markdown
+
+skills:
+  - speakpals-language-tutor
+  - speakpals-voice-handler
+  - speakpals-lesson-scheduler
+
+plugins:
+  gog:
+    enabled: true
+    scopes:
+      calendar: read_write
+      gmail: readonly
+    default_calendar: primary
+    timezone: Europe/Copenhagen
+
+schedules:
+  - name: daily-lessons
+    cron: "0 * * * *"   # every hour — scheduler checks who is due
+    skill: speakpals-lesson-scheduler
+    command: "check and send any due lessons"
+
+permissions:
+  filesystem:
+    enabled: true
+    paths:
+      - /home/openclaw/memory
+      - /home/openclaw/config
+      - /tmp
+  shell:
+    enabled: false
+  network:
+    enabled: true
+    allowed_domains:
+      - api.anthropic.com
+      - api.elevenlabs.io
+      - www.googleapis.com
+      - oauth2.googleapis.com
