@@ -4,7 +4,7 @@ import streamlit as st
 
 from utils.bridge_client import (
     BridgeError, save_profile, save_schedule,
-    get_google_auth_url, get_google_status, relink_whatsapp, update_raw_memory,
+    get_google_status, relink_whatsapp, update_raw_memory,
 )
 from utils.constants import (
     APP_ICON, NATIVE_LANGUAGES, DANISH_LEVELS, LEARNING_GOALS,
@@ -72,7 +72,7 @@ if submitted_profile:
 st.divider()
 
 # ---------------------------------------------------------------------------
-# Integrations
+# Integrations — Google Calendar + Gmail
 # ---------------------------------------------------------------------------
 st.subheader("Integrations")
 
@@ -87,12 +87,6 @@ with col1:
         st.success("Connected")
     else:
         st.caption("Not connected")
-        if st.button("Connect Calendar"):
-            url_result = get_google_auth_url()
-            if isinstance(url_result, BridgeError):
-                st.error(url_result.message)
-            else:
-                st.link_button("Open Google consent screen", url_result["data"]["url"])
 
 with col2:
     st.write("**Gmail**")
@@ -100,12 +94,21 @@ with col2:
         st.success("Connected")
     else:
         st.caption("Not connected")
-        if st.button("Connect Gmail"):
-            url_result = get_google_auth_url()
-            if isinstance(url_result, BridgeError):
-                st.error(url_result.message)
-            else:
-                st.link_button("Open Google consent screen", url_result["data"]["url"])
+
+if not cal_connected and not gmail_connected:
+    with st.expander("How to connect Google"):
+        st.markdown(
+            "Google OAuth runs directly on the VPS — not through this panel.\n\n"
+            "**SSH into your Droplet and run:**\n"
+            "```bash\n"
+            "node /root/speakpals-whatsapp/vps/scripts/gog_auth.js\n"
+            "```\n"
+            "A URL will appear. Open it in your browser, sign in with your Google account, "
+            "and grant the permissions. The token is saved automatically.\n\n"
+            "Then come back here and refresh — status will update to Connected."
+        )
+    if st.button("↻ Refresh connection status"):
+        st.rerun()
 
 st.divider()
 
