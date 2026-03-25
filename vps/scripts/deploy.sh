@@ -10,7 +10,8 @@ echo "=== SpeakPals Tutor — VPS Deploy ==="
 # System dependencies
 # ---------------------------------------------------------------------------
 apt update && apt upgrade -y
-apt install -y ffmpeg python3-pip python3-venv nodejs npm
+apt install -y ffmpeg python3-pip python3-venv
+# nodejs is already installed via nodesource (npm is bundled with it)
 
 # ---------------------------------------------------------------------------
 # ClawHub skill: gog (Google Calendar + Gmail)

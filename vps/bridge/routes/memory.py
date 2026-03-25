@@ -23,14 +23,6 @@ def _user_dir(user_id: str) -> Path:
 # Models
 # ---------------------------------------------------------------------------
 
-class RawMemoryUpdate(BaseModel):
-    # keys are filenames e.g. "profile.md", values are new markdown content
-    __root__: dict[str, str]
-
-    def items(self):
-        return self.__root__.items()
-
-
 class VocabUpdate(BaseModel):
     mastered: bool | None = None
     times_correct: int | None = None
